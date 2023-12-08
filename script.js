@@ -195,7 +195,7 @@ function endGame() {
   message.style.marginBottom = "20px";
 
   var continueButton = document.createElement("button");
-  continueButton.textContent = "Tiếp tục";
+  continueButton.textContent = "Chơi lại";
   continueButton.style.padding = "10px";
   continueButton.style.cursor = "pointer";
   continueButton.style.background = "#ffffff";
