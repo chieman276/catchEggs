@@ -28,7 +28,7 @@ var eggSpawnInterval = 60;
 var rockSpawnInterval = 300; // Thời gian giữa mỗi rock xuất hiện (5 giây)
 var frameCount = 0;
 var time = 0;
-
+var gameOver = false;
 var basketX = canvas.width / 2 - basketWidth / 2; 
 var basketY = canvas.height - basketHeight; 
 
@@ -139,24 +139,26 @@ function clearCanvas() {
 }
 
 function gameLoop() {
-  clearCanvas();
-  drawHen();
-  drawGoldenStick();
-  createEgg();
-  updateEggs();
-  drawEggs();
-  
-  time++;
-  if (time % rockSpawnInterval === 0) {
-    createRock();
+  if (!gameOver) {
+    clearCanvas();
+    drawHen();
+    drawGoldenStick();
+    createEgg();
+    updateEggs();
+    drawEggs();
+    
+    time++;
+    if (time % rockSpawnInterval === 0) {
+      createRock();
+    }
+    
+    updateRocks();
+    drawRocks();
+    
+    drawBasket();
+    updateScore();
+    requestAnimationFrame(gameLoop);
   }
-  
-  updateRocks();
-  drawRocks();
-  
-  drawBasket();
-  updateScore();
-  requestAnimationFrame(gameLoop);
 }
 
 function resetGame() {
@@ -170,12 +172,51 @@ function resetGame() {
 }
 
 function endGame() {
-  alert("Trò chơi kết thúc! Số điểm của bạn là: " + score);
-  resetGame();
-  gameLoop();
+  // Dừng trò chơi
+  cancelAnimationFrame(animationFrame);
+  setTimeout(function() {
+    gameOver = true;
+  }, 32)
+  // Hiển thị thông báo và nút tiếp tục
+  var messageContainer = document.createElement("div");
+  messageContainer.id = "message-container";
+  messageContainer.style.position = "absolute";
+  messageContainer.style.top = "50%";
+  messageContainer.style.left = "50%";
+  messageContainer.style.transform = "translate(-50%, -50%)";
+  messageContainer.style.padding = "20px";
+  messageContainer.style.background = "linear-gradient(to right, rgb(3 0 255), rgb(255 0 179), rgb(0, 0, 255))";
+  messageContainer.style.color = "#ffffff";
+  messageContainer.style.borderRadius = "10px";
+  messageContainer.style.textAlign = "center";
+
+  var message = document.createElement("p");
+  message.textContent = "Trò chơi kết thúc! Số điểm của bạn là: " + score;
+  message.style.marginBottom = "20px";
+
+  var continueButton = document.createElement("button");
+  continueButton.textContent = "Tiếp tục";
+  continueButton.style.padding = "10px";
+  continueButton.style.cursor = "pointer";
+  continueButton.style.background = "#ffffff";
+  continueButton.style.border = "none";
+  continueButton.style.borderRadius = "5px";
+  continueButton.style.fontWeight = "bold";
+  continueButton.style.marginRight = "10px";
+  continueButton.addEventListener("click", function () {
+    location.reload();
+    resetGame();
+    messageContainer.remove();
+    gameLoop();
+  });
+
+  messageContainer.appendChild(message);
+  messageContainer.appendChild(continueButton);
+  document.body.appendChild(messageContainer);
 }
+
 function updateScore() {
   document.getElementById("score").innerHTML = "Score: " + score;
 }
 // Bắt đầu trò chơi
-gameLoop();
+var animationFrame = requestAnimationFrame(gameLoop);
