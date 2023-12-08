@@ -176,7 +176,7 @@ function endGame() {
   cancelAnimationFrame(animationFrame);
   setTimeout(function() {
     gameOver = true;
-  }, 32)
+  }, 34)
   // Hiển thị thông báo và nút tiếp tục
   var messageContainer = document.createElement("div");
   messageContainer.id = "message-container";
