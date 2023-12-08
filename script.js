@@ -216,7 +216,7 @@ function endGame() {
 }
 
 function updateScore() {
-  document.getElementById("score").innerHTML = "Score: " + score;
+  document.getElementById("score").innerHTML = "Điểm: " + score;
 }
 // Bắt đầu trò chơi
 var animationFrame = requestAnimationFrame(gameLoop);
