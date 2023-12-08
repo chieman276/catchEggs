@@ -25,7 +25,7 @@ var score = 0;
 var eggs = [];
 var rocks = [];
 var eggSpawnInterval = 60;
-var rockSpawnInterval = 300; // Thời gian giữa mỗi rock xuất hiện (5 giây)
+var rockSpawnInterval = 300;
 var frameCount = 0;
 var time = 0;
 var gameOver = false;
@@ -172,12 +172,10 @@ function resetGame() {
 }
 
 function endGame() {
-  // Dừng trò chơi
   cancelAnimationFrame(animationFrame);
   setTimeout(function() {
     gameOver = true;
   }, 40)
-  // Hiển thị thông báo và nút tiếp tục
   var messageContainer = document.createElement("div");
   messageContainer.id = "message-container";
   messageContainer.style.position = "absolute";
@@ -218,5 +216,4 @@ function endGame() {
 function updateScore() {
   document.getElementById("score").innerHTML = "Điểm: " + score;
 }
-// Bắt đầu trò chơi
 var animationFrame = requestAnimationFrame(gameLoop);
