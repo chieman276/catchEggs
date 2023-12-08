@@ -155,6 +155,7 @@ function gameLoop() {
   drawRocks();
   
   drawBasket();
+  updateScore();
   requestAnimationFrame(gameLoop);
 }
 
@@ -173,6 +174,8 @@ function endGame() {
   resetGame();
   gameLoop();
 }
-
+function updateScore() {
+  document.getElementById("score").innerHTML = "Score: " + score;
+}
 // Bắt đầu trò chơi
 gameLoop();
