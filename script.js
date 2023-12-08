@@ -8,13 +8,13 @@ egg.src = "images/egg_gold.png";
 basket.src = "images/basket.png";
 hen.src = "images/hen.png";
 goldenStick.src = "images/goldenStick.png"; 
-var basketWidth = 100;
+var basketWidth = 80;
 var basketHeight = 60;
 var eggWidth = 30;
-var eggHeight = 50;
-var henWidth = 70;
-var henHeight = 90;
-var goldenStickWidth = 400;
+var eggHeight = 45;
+var henWidth = 60;
+var henHeight = 70;
+var goldenStickWidth = 300;
 var goldenStickHeight = 20;
 var score = 0;
 
@@ -28,9 +28,9 @@ var basketY = canvas.height - basketHeight;
 canvas.addEventListener("click", function(event) {
   var clickX = event.clientX - canvas.getBoundingClientRect().left;
   if (clickX < basketX) {
-    basketX -= 100;
+    basketX -= 80;
   } else if (clickX > basketX + basketWidth) {
-    basketX += 100;
+    basketX += 80;
   }
 });
 
