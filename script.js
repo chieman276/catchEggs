@@ -22,6 +22,14 @@ var goldenStickWidth = 300;
 var goldenStickHeight = 20;
 var score = 0;
 
+var heartCount = 3;
+var hearts = [];
+var heartSpacing = 5;
+var heartImage = new Image();
+heartImage.src = "images/heart.png";
+var heartWidth = 20;
+var heartHeight = 20;
+
 var eggs = [];
 var rocks = [];
 var eggSpawnInterval = 60;
@@ -43,6 +51,14 @@ canvas.addEventListener("click", function(event) {
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function drawHearts() {
+  for (var i = 0; i < heartCount; i++) {
+    var x = 10 + i * (heartWidth + heartSpacing);
+    var y = 10;
+    ctx.drawImage(heartImage, x, y, heartWidth, heartHeight);
+  }
 }
 
 function createEgg() {
@@ -105,16 +121,40 @@ function updateEggs() {
       eggs[i].y <= basketY + basketHeight
     ) {
       eggs.splice(i, 1);
+      playEggSound();
       score++;
       document.getElementById("score").innerHTML = "Điểm: " + score;
     }
     
     if (eggs[i].y > canvas.height) {
       eggs.splice(i, 1);
+      playWarningSound(); 
+      if (heartCount > 0) {
+        heartCount--;
+         canvas.classList.add("blink");
+         setTimeout(function() {
+           canvas.classList.remove("blink");
+         }, 600);
+        if (heartCount === 0) {
+          endGame();
+        }
+      }
     }
   }
 }
 
+function playEggSound() {
+  var eggSound = document.getElementById("eggSound");
+  eggSound.play();
+}
+function playWarningSound() {
+  var warningEggSound = document.getElementById("warningEggSound");
+  warningEggSound.play();
+}
+function playGameOverSound() {
+  var gameOverSound = document.getElementById("gameOverSound");
+  gameOverSound.play();
+}
 function updateRocks() {
   for (var i = 0; i < rocks.length; i++) {
     rocks[i].y += rocks[i].speed;
@@ -156,6 +196,7 @@ function gameLoop() {
     drawRocks();
     
     drawBasket();
+    drawHearts();
     updateScore();
     requestAnimationFrame(gameLoop);
   }
@@ -169,10 +210,12 @@ function resetGame() {
   time = 0;
   basketX = canvas.width / 2 - basketWidth / 2; 
   basketY = canvas.height - basketHeight; 
+  heartCount = 3;
 }
 
 function endGame() {
   cancelAnimationFrame(animationFrame);
+  playGameOverSound();
   setTimeout(function() {
     gameOver = true;
   }, 40)
